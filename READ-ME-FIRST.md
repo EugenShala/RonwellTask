@@ -29,3 +29,4 @@ When you open RonwellTask.sln,
 							--------- NOTE ----------
 For this task I have created MVC project and Blazor project. 
 In blazor I have demonstrated List of Employee, Create new Employee and delete employee and in MVC project is implemented CRUD operation. 
+I have created two branches - one is master as a default branch for MVC and another branch is Blazor for Blazor part.
