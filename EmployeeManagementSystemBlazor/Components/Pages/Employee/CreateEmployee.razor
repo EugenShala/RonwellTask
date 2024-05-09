@@ -1,0 +1,46 @@
+﻿@page "/Employee/CreateEmployee"
+
+
+<div class="row">
+    <div class="col-md-4">
+        <EditForm Model="employee" OnValidSubmit="CreateNewEmployee" FormName="employeeForm">
+            
+            <div class="form-group">
+                <label for="name" class="control-label">Name</label>
+                <InputText id="name" class="form-control" @bind-Value="employee.Name" />
+                <ValidationMessage For="()=>employee.Name"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Position</label>
+                <InputText for="Position" class="form-control" @bind-Value="employee.Position" />
+                <ValidationMessage For="()=>employee.Position"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Salary</label>
+                <InputNumber for="Salary" class="form-control" @bind-Value="employee.Salary" />
+                <ValidationMessage For="()=>employee.Salary"></ValidationMessage>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary" @onclick="@CreateNewEmployee"> Save </button>
+            </div>
+            <DataAnnotationsValidator/>
+            <ValidationSummary />
+        </EditForm>
+    </div>
+</div>
+
+
+
+@code {
+    // data binding between forms and components
+    [SupplyParameterFromForm]
+    public Employee employee { get; set; } = new();
+
+
+    protected async Task CreateNewEmployee()
+    {
+        await employeeRepository.AddEmployee(employee);
+        navigationManager.NavigateTo("/Employee/Index");
+    }
+
+}

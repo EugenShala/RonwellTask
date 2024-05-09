@@ -1,0 +1,98 @@
+﻿@page "/Employee/Index"
+@rendermode InteractiveServer
+
+<h3>Employee List</h3>
+
+
+@if (employees == null)
+{
+    <p><em>Loading ...</em></p>
+}
+else
+{
+    <NavLink class="nav-link" href="Employee/CreateEmployee">
+        <span class="oi oi-plus" aria-hidden="true">
+            Create New Employee
+        </span>
+    </NavLink>
+
+
+    <table class="table table-bordered table-striped table-hover table-responsive table-responsive-sm">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Position</th>
+                <th scope="col">Salary</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in employees)
+            {
+                <tr>
+                    <td>@employee.Name</td>
+                    <td>@employee.Position</td>
+                    <td>@employee.Salary</td>
+                    <td>
+                        <div class="flex justify-center space-x-2">
+                            <button @onclick="()=>DeleteEmployee(employee.EmployeeId)" class="btn btn-danger">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code{
+    private List<Employee> employees = new List<Employee>();
+    private Employee employee = new ();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ListAllEmployees();
+    }
+
+    private async Task ListAllEmployees()
+    {
+        // Fetch the list of employees from the repository
+        employees = await employeeRepository.GetAllEmployees();
+
+        if (employees is null)
+        {
+            throw new Exception("Employee collection is null.");
+        }
+
+        // Ensure uniqueness by using Distnict to remove duplicates from a list.
+        employees = employees.Distinct().ToList();
+    }
+
+
+    private async Task DeleteEmployee(int id)
+    {
+         var confirm = await jSRuntime.InvokeAsync<bool>("confirm", "Are you sure to delete this employee?");
+
+        if (confirm)
+        {
+            try
+            {
+                await employeeRepository.DeleteEmployee(id);
+                //Refresh the list of employees
+                await ListAllEmployees();
+                // Trigger UI update
+                StateHasChanged();
+
+            }
+            catch (Exception ex)
+            {
+                
+                Console.WriteLine($"Error deleting employee: {ex.Message}");
+            }
+        }
+    }
+
+}
