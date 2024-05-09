@@ -20,7 +20,7 @@ in which asynchronous programming allow two or more indenpendent taasks to run i
 							--------- HOW TO RUN ----------
 When you open RonwellTask.sln,
 1. configure your database at appsettings.json - 
-	"DefaultConnection": "Server=YOUR-DATABASE-NAME;Database=UMS-Db;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
+	"DefaultConnection": "Server=YOUR-DATABASE-NAME;Database=EmployeeManagementSystemDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
 2. at package manager console write update-database.
 3. RUN.
 
